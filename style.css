@@ -1,0 +1,229 @@
+:root {
+    --bg-main: #08090c;
+    --bg-surface: #0f111a;
+    --bg-surface-elevated: #161924;
+    --border-color: #222634;
+    --text-primary: #f8f9fa;
+    --text-secondary: #a0aec0;
+    --accent-red: #ff1801;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-header {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.brand h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand .badge {
+    font-size: 0.6rem;
+    background: #1e2235;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-red);
+    font-weight: bold;
+}
+
+.brand p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.filter-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    scrollbar-width: none;
+}
+
+.filter-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 6px;
+    width: max-content;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+    background: var(--bg-surface-elevated);
+}
+
+.filter-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-main);
+    border-color: var(--text-primary);
+    font-weight: 600;
+}
+
+.main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.map-section {
+    flex: 1;
+    position: relative;
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    background: #090a0f;
+}
+
+.side-panel {
+    width: 360px;
+    background: var(--bg-surface);
+    border-left: 1px solid var(--border-color);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.panel-placeholder {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    text-align: center;
+    margin: auto 0;
+}
+
+.panel-content h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 10px 0;
+    border-bottom: 1px solid #181b28;
+}
+
+.meta-label {
+    color: var(--text-secondary);
+}
+
+.meta-value {
+    font-weight: 600;
+}
+
+.info-description {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 20px 0 25px 0;
+}
+
+.gmaps-action-btn {
+    background: var(--accent-red);
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+}
+
+.gmaps-action-btn:hover {
+    background: #cc1200;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.marker-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    cursor: pointer;
+    transform: translate(-2px, -2px);
+    transition: transform 0.1s ease;
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+    .app-container {
+        height: auto;
+    }
+    .app-header {
+        padding: 12px 15px;
+    }
+    .main-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    .map-section {
+        height: 50vh;
+        min-height: 380px;
+    }
+    .side-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        min-height: 280px;
+        padding: 20px;
+        overflow-y: visible;
+    }
+}
