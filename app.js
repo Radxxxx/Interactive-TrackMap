@@ -32,6 +32,13 @@
      ufficiale del circuito, non partner esterni) e li ho aggiunti come
      categoria informativa separata.
 
+   FIX LAYOUT MOBILE (v3): la prima versione del fix forzava un'altezza fissa
+   anche su .app-container/.main-layout da mobile. Ma .main-layout ha
+   overflow:hidden, quindi forzarne l'altezza tagliava via il fondo del
+   pannello laterale (incluso il bottone "Avvia Navigazione Satellitare").
+   Ora su mobile sistemiamo SOLO l'altezza della mappa e lasciamo che il resto
+   della pagina scorra naturalmente, come previsto dal CSS originale.
+
    Prima di andare in produzione: verificare comunque i punti a confidenza
    media con un pin manuale su Google Maps/Google Earth.
    ========================================================================= */
@@ -230,20 +237,31 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
 
-// FIX DEFINITIVO: calcola l'altezza reale in pixel invece di affidarsi a vh/dvh/flex
+// FIX LAYOUT MOBILE (v3): su desktop blocchiamo le altezze in pixel reali (evita
+// i bug di vh/dvh/flex annidati). Su MOBILE sistemiamo SOLO l'altezza della mappa
+// e lasciamo .app-container/.main-layout liberi (height: '' = torna al CSS
+// originale, che su mobile è height:auto con scroll naturale della pagina).
+// Forzare un'altezza fissa anche lì, con .main-layout che ha overflow:hidden,
+// tagliava via il fondo del pannello laterale (bottone di navigazione incluso).
 function sizeLayout() {
     const vh = window.innerHeight;
-    document.querySelector('.app-container').style.height = vh + 'px';
-
-    const header = document.querySelector('.app-header');
-    const headerHeight = header ? header.offsetHeight : 0;
-    const mainLayoutHeight = vh - headerHeight;
-    document.querySelector('.main-layout').style.height = mainLayoutHeight + 'px';
-
     const isMobile = window.innerWidth <= 768;
-    const mapHeight = isMobile ? Math.max(380, mainLayoutHeight * 0.5) : mainLayoutHeight;
-    document.querySelector('.map-section').style.height = mapHeight + 'px';
-    document.getElementById('map').style.height = mapHeight + 'px';
+
+    if (isMobile) {
+        document.querySelector('.app-container').style.height = '';
+        document.querySelector('.main-layout').style.height = '';
+        document.querySelector('.map-section').style.height = '';
+        const mapHeight = Math.max(380, vh * 0.5);
+        document.getElementById('map').style.height = mapHeight + 'px';
+    } else {
+        document.querySelector('.app-container').style.height = vh + 'px';
+        const header = document.querySelector('.app-header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        const mainLayoutHeight = vh - headerHeight;
+        document.querySelector('.main-layout').style.height = mainLayoutHeight + 'px';
+        document.querySelector('.map-section').style.height = mainLayoutHeight + 'px';
+        document.getElementById('map').style.height = mainLayoutHeight + 'px';
+    }
 
     map.invalidateSize();
 }
