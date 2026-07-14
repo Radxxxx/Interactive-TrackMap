@@ -1,62 +1,60 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Monza GP - Precision Tracker Tool</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Monza GP - Precision Tracker Tool</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app-container">
-        <header class="app-header">
-            <div class="brand">
-                <h1>DIGITAL INTERACTIVE TRACK MAP <span class="badge">v5.0</span></h1>
-                <p>Geometria del tracciato reale e geolocalizzazione punti d'interesse (aggiornato ultimo GP).</p>
-            </div>
-            
-            <div class="filter-wrapper">
-                <nav class="filter-bar">
-                    <button class="filter-btn active" data-target="all">Tutti i Punti</button>
-                    <button class="filter-btn" data-target="parking">Parcheggi</button>
-                    <button class="filter-btn" data-target="gates">Varchi Ingressi</button>
-                    <button class="filter-btn" data-target="ga">Aree Prato</button>
-                    <button class="filter-btn" data-target="photo">Punti Foto</button>
-                    <button class="filter-btn" data-target="food">Oasi Ristoro</button>
-                </nav>
-            </div>
-        </header>
+<div class="app-container">
+<header class="app-header">
+<div class="brand">
+<h1>MONZA TELEMETRY LOGISTICS <span class="badge">v5.0</span></h1>
+<p>Geometria del tracciato reale e geolocalizzazione punti d'interesse (aggiornato ultimo GP).</p>
+</div>
+<div class="filter-wrapper">
+<nav class="filter-bar">
+<button class="filter-btn active" data-target="all">Tutti i Punti</button>
+<button class="filter-btn" data-target="parking">Parcheggi</button>
+<button class="filter-btn" data-target="gates">Varchi Ingressi</button>
+<button class="filter-btn" data-target="ga">Aree Prato</button>
+<button class="filter-btn" data-target="photo">Punti Foto</button>
+<button class="filter-btn" data-target="food">Oasi Ristoro</button>
+</nav>
+</div>
+</header>
 
-        <main class="main-layout">
-            <div class="map-section">
-                <div id="map"></div>
-            </div>
-            
-            <aside class="side-panel" id="detail-panel">
-                <div class="panel-placeholder" id="panel-placeholder">
-                    <p>Seleziona un marker sulla mappa per visualizzare i flussi d'affluenza, le note logistiche dell'ultimo GP e la navigazione GPS.</p>
-                </div>
-                <div class="panel-content hidden" id="panel-content">
-                    <h2 id="info-title">-</h2>
-                    <div class="meta-row">
-                        <span class="meta-label">Accesso / Tariffa:</span>
-                        <span class="meta-value" id="info-stat1">-</span>
-                    </div>
-                    <div class="meta-row">
-                        <span class="meta-label">Criticità Riscontrata:</span>
-                        <span class="meta-value" id="info-stat2">-</span>
-                    </div>
-                    <p class="info-description" id="info-desc">-</p>
-                    <a href="#" target="_blank" class="gmaps-action-btn" id="info-link">
+<main class="main-layout">
+<div class="map-section">
+<div id="map"></div>
+</div>
+<aside class="side-panel" id="detail-panel">
+<div class="panel-placeholder" id="panel-placeholder">
+<p>Seleziona un marker sulla mappa per visualizzare i flussi d'affluenza, le note logistiche dell'ultimo GP e la navigazione GPS.</p>
+</div>
+<div class="panel-content hidden" id="panel-content">
+<h2 id="info-title">-</h2>
+<div class="meta-row">
+<span class="meta-label">Accesso / Tariffa:</span>
+<span class="meta-value" id="info-stat1">-</span>
+</div>
+<div class="meta-row">
+<span class="meta-label">Criticità Riscontrata:</span>
+<span class="meta-value" id="info-stat2">-</span>
+</div>
+<p class="info-description" id="info-desc">-</p>
+<a href="#" target="_blank" class="gmaps-action-btn" id="info-link">
                         Avvia Navigazione Satellitare ↗
-                    </a>
-                </div>
-            </aside>
-        </main>
-    </div>
+</a>
+</div>
+</aside>
+</main>
+</div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js"></script>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -230,8 +230,9 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
 
-// 3. CARICAMENTO TRACCIATO REALE DA GEOJSON APERTO (bacinger/f1-circuits, derivato da OpenStreetMap)
-fetch('https://raw.githubusercontent.com/bacinger/f1-circuits/master/circuits/it-1922.geojson')
+// 3. CARICAMENTO TRACCIATO REALE DA GEOJSON LOCALE (scaricato una volta da bacinger/f1-circuits,
+//    derivato da OpenStreetMap, salvato nel repo per non dipendere da raw.githubusercontent.com)
+fetch('data/monza-track.geojson')
     .then(response => response.json())
     .then(geojsonData => {
         L.geoJSON(geojsonData, {
