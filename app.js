@@ -230,6 +230,22 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
 
+// FIX DEFINITIVO: calcola l'altezza reale in pixel invece di affidarsi a vh/dvh/flex
+function sizeMapContainer() {
+    const header = document.querySelector('.app-header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const isMobile = window.innerWidth <= 768;
+    const mapHeight = isMobile
+        ? Math.max(380, window.innerHeight * 0.5)
+        : window.innerHeight - headerHeight;
+    document.getElementById('map').style.height = mapHeight + 'px';
+    map.invalidateSize();
+}
+window.addEventListener('load', sizeMapContainer);
+window.addEventListener('resize', sizeMapContainer);
+window.addEventListener('orientationchange', () => setTimeout(sizeMapContainer, 300));
+sizeMapContainer();
+
 // 3. CARICAMENTO TRACCIATO REALE DA GEOJSON LOCALE (scaricato una volta da bacinger/f1-circuits,
 //    derivato da OpenStreetMap, salvato nel repo per non dipendere da raw.githubusercontent.com)
 fetch('data/monza-track.geojson')
