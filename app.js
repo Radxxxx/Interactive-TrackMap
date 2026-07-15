@@ -254,7 +254,7 @@ function sizeLayout() {
     document.querySelector('.main-layout').style.height = mainLayoutHeight + 'px';
 
     if (isMobile) {
-        const mapHeight = Math.max(260, Math.min(mainLayoutHeight * 0.42, 360));
+        const mapHeight = Math.max(380, mainLayoutHeight * 0.5);
         document.querySelector('.map-section').style.height = mapHeight + 'px';
         document.getElementById('map').style.height = mapHeight + 'px';
         // Il pannello NON riceve un'altezza fissata da qui: flex:1 + min-height:0
