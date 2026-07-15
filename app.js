@@ -242,8 +242,15 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 // restante e scorre SOLO al suo interno (grazie a flex:1 + min-height:0 + overflow-y:auto
 // nel CSS). Continuiamo a calcolare le altezze in pixel reali invece di affidarci a
 // vh/dvh, che su alcuni browser mobile vengono interpretati in modo incoerente.
+// Su iOS Safari/Chrome, window.innerHeight e window.visualViewport.height possono
+// differire (soprattutto con barre degli indirizzi dinamiche). visualViewport è
+// più rappresentativo dello spazio realmente visibile quando disponibile.
+function getViewportHeight() {
+    return (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+}
+
 function sizeLayout() {
-    const vh = window.innerHeight;
+    const vh = getViewportHeight();
     const isMobile = window.innerWidth <= 768;
 
     const header = document.querySelector('.app-header');
@@ -270,6 +277,9 @@ function sizeLayout() {
 window.addEventListener('load', sizeLayout);
 window.addEventListener('resize', sizeLayout);
 window.addEventListener('orientationchange', () => setTimeout(sizeLayout, 300));
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', sizeLayout);
+}
 sizeLayout();
 
 // 3. CARICAMENTO TRACCIATO REALE DA GEOJSON LOCALE (scaricato una volta da bacinger/f1-circuits,
@@ -320,6 +330,19 @@ function initMapMarkers() {
                 document.getElementById('info-link').href = `https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lng}`;
 
                 map.panTo([poi.lat, poi.lng]);
+
+                // Riporta il pannello in cima e mostra la freccia solo se c'è
+                // davvero contenuto da scorrere per raggiungere il fondo.
+                const sidePanel = document.getElementById('detail-panel');
+                const scrollBtn = document.getElementById('scroll-down-btn');
+                sidePanel.scrollTop = 0;
+                requestAnimationFrame(() => {
+                    if (sidePanel.scrollHeight > sidePanel.clientHeight + 20) {
+                        scrollBtn.classList.remove('hidden');
+                    } else {
+                        scrollBtn.classList.add('hidden');
+                    }
+                });
             });
         } catch (e) {
             console.error("Errore durante la creazione del marker:", poi.title, e);
@@ -328,6 +351,14 @@ function initMapMarkers() {
 }
 
 initMapMarkers();
+
+// Bottone freccia-giù: scorre il pannello fino in fondo, poi sparisce.
+// Ricompare al click su un nuovo marker (gestito dentro initMapMarkers).
+document.getElementById('scroll-down-btn').addEventListener('click', () => {
+    const sidePanel = document.getElementById('detail-panel');
+    sidePanel.scrollTo({ top: sidePanel.scrollHeight, behavior: 'smooth' });
+    document.getElementById('scroll-down-btn').classList.add('hidden');
+});
 
 // 5. GESTIONE FILTRI BOTTONI
 const filterBtns = document.querySelectorAll('.filter-bar .filter-btn');
@@ -349,5 +380,6 @@ filterBtns.forEach(btn => {
 
         document.getElementById('panel-placeholder').classList.remove('hidden');
         document.getElementById('panel-content').classList.add('hidden');
+        document.getElementById('scroll-down-btn').classList.add('hidden');
     });
 });

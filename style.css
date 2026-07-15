@@ -33,6 +33,7 @@ body {
     background-color: var(--bg-surface);
     border-bottom: 1px solid var(--border-color);
     padding: 12px 20px;
+    padding-top: max(12px, env(safe-area-inset-top));
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -128,6 +129,34 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    position: relative;
+}
+
+.scroll-down-btn {
+    position: sticky;
+    float: right;
+    bottom: 16px;
+    margin-top: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    font-size: 1.15rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+    z-index: 5;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.scroll-down-btn:hover {
+    background: #cc1200;
+    transform: scale(1.05);
 }
 
 .panel-placeholder {
@@ -209,13 +238,14 @@ body {
     }
     .map-section {
         flex: none;
-        min-height: 260px;
+        min-height: 380px;
     }
     .side-panel {
         width: 100%;
         border-left: none;
         border-top: 1px solid var(--border-color);
         padding: 20px;
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         flex: 1;
