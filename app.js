@@ -237,28 +237,30 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
 
-// FIX LAYOUT MOBILE (v3): su desktop blocchiamo le altezze in pixel reali (evita
-// i bug di vh/dvh/flex annidati). Su MOBILE sistemiamo SOLO l'altezza della mappa
-// e lasciamo .app-container/.main-layout liberi (height: '' = torna al CSS
-// originale, che su mobile è height:auto con scroll naturale della pagina).
-// Forzare un'altezza fissa anche lì, con .main-layout che ha overflow:hidden,
-// tagliava via il fondo del pannello laterale (bottone di navigazione incluso).
+// FIX LAYOUT (v4): pagina bloccata anche su mobile (niente più scroll di tutta la
+// pagina). La mappa ha un'altezza fissa, il pannello laterale riempie lo spazio
+// restante e scorre SOLO al suo interno (grazie a flex:1 + min-height:0 + overflow-y:auto
+// nel CSS). Continuiamo a calcolare le altezze in pixel reali invece di affidarci a
+// vh/dvh, che su alcuni browser mobile vengono interpretati in modo incoerente.
 function sizeLayout() {
     const vh = window.innerHeight;
     const isMobile = window.innerWidth <= 768;
 
+    const header = document.querySelector('.app-header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const mainLayoutHeight = vh - headerHeight;
+
+    document.querySelector('.app-container').style.height = vh + 'px';
+    document.querySelector('.main-layout').style.height = mainLayoutHeight + 'px';
+
     if (isMobile) {
-        document.querySelector('.app-container').style.height = '';
-        document.querySelector('.main-layout').style.height = '';
-        document.querySelector('.map-section').style.height = '';
-        const mapHeight = Math.max(380, vh * 0.5);
+        const mapHeight = Math.max(260, Math.min(mainLayoutHeight * 0.42, 360));
+        document.querySelector('.map-section').style.height = mapHeight + 'px';
         document.getElementById('map').style.height = mapHeight + 'px';
+        // Il pannello NON riceve un'altezza fissata da qui: flex:1 + min-height:0
+        // nel CSS lo fanno riempire lo spazio restante, e overflow-y:auto lo fa
+        // scorrere internamente quando il contenuto è più alto dello spazio disponibile.
     } else {
-        document.querySelector('.app-container').style.height = vh + 'px';
-        const header = document.querySelector('.app-header');
-        const headerHeight = header ? header.offsetHeight : 0;
-        const mainLayoutHeight = vh - headerHeight;
-        document.querySelector('.main-layout').style.height = mainLayoutHeight + 'px';
         document.querySelector('.map-section').style.height = mainLayoutHeight + 'px';
         document.getElementById('map').style.height = mainLayoutHeight + 'px';
     }
