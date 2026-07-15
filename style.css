@@ -134,7 +134,8 @@ body {
 
 .scroll-down-btn {
     position: sticky;
-    float: right;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: 16px;
     margin-top: 12px;
     width: 42px;
@@ -156,7 +157,7 @@ body {
 
 .scroll-down-btn:hover {
     background: #cc1200;
-    transform: scale(1.05);
+    transform: translateX(-50%) scale(1.05);
 }
 
 .panel-placeholder {
