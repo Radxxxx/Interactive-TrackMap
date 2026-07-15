@@ -360,6 +360,12 @@ document.getElementById('scroll-down-btn').addEventListener('click', () => {
     document.getElementById('scroll-down-btn').classList.add('hidden');
 });
 
+// Se l'utente scorre manualmente il pannello (anche di poco), il bottone
+// non serve più: lo nascondiamo. Ricomparirà al prossimo marker cliccato.
+document.getElementById('detail-panel').addEventListener('scroll', () => {
+    document.getElementById('scroll-down-btn').classList.add('hidden');
+}, { passive: true });
+
 // 5. GESTIONE FILTRI BOTTONI
 const filterBtns = document.querySelectorAll('.filter-bar .filter-btn');
 
